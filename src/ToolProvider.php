@@ -792,13 +792,41 @@ EOD;
         $this->user = new User($this->resourceLink, $user_id);
 
         // Set the user name
-        $firstname = (isset($requestBody['lis_person_name_given'])) ? $requestBody['lis_person_name_given'] : '';
-        $lastname = (isset($requestBody['lis_person_name_family'])) ? $requestBody['lis_person_name_family'] : '';
-        $fullname = (isset($requestBody['lis_person_name_full'])) ? $requestBody['lis_person_name_full'] : '';
+        if (isset($requestBody['lis_person_name_given'])) {
+            $firstname = $requestBody['lis_person_name_given'];
+        } elseif (isset($requestBody['custom_lis_person_given_name'])) {
+            $firstname = $requestBody['custom_lis_person_given_name'];
+        } else {
+            $firstname = '';
+        }
+
+        if (isset($requestBody['lis_person_name_family'])) {
+            $lastname = $requestBody['lis_person_name_family'];
+        } elseif (isset($requestBody['custom_lis_person_name_family'])) {
+            $lastname = $requestBody['custom_lis_person_name_family'];
+        } else {
+            $lastname = '';
+        }
+
+        if (isset($requestBody['lis_person_name_full'])) {
+            $fullname = $requestBody['lis_person_name_full'];
+        } elseif (isset($requestBody['custom_lis_person_name_full'])) {
+            $fullname = $requestBody['custom_lis_person_name_full'];
+        } else {
+            $fullname = '';
+        }
+
         $this->user->setNames($firstname, $lastname, $fullname);
 
         // Set the user email
-        $email = (isset($requestBody['lis_person_contact_email_primary'])) ? $requestBody['lis_person_contact_email_primary'] : '';
+        if (isset($requestBody['lis_person_contact_email_primary'])) {
+            $email = $requestBody['lis_person_contact_email_primary'];
+        } elseif (isset($requestBody['custom_lis_person_contact_email_primary'])) {
+            $email = $requestBody['custom_lis_person_contact_email_primary'];
+        } else {
+            $email = '';
+        }
+
         $this->user->setEmail($email, $this->defaultEmail);
 
         // Set the user roles
