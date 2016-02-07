@@ -273,7 +273,7 @@ class User
      */
     public function isAdmin()
     {
-        return $this->hasRoles([
+        return $this->hasOneOrMoreRoles([
             'Administrator',
             'urn:lti:sysrole:ims/lis/SysAdmin',
             'urn:lti:sysrole:ims/lis/Administrator',
@@ -288,7 +288,7 @@ class User
      */
     public function isStaff()
     {
-        return $this->hasRoles(['Instructor', 'ContentDeveloper', 'TeachingAssistant']);
+        return $this->hasOneOrMoreRoles(['Instructor', 'ContentDeveloper', 'TeachingAssistant']);
     }
 
     /**
@@ -317,7 +317,14 @@ class User
         return in_array($role, $this->roles);
     }
 
-    private function hasRoles(array $roles)
+    private function hasOneOrMoreRoles(array $roles)
+    {
+        $myRoles = array_filter($roles, [$this, 'hasRole']);
+
+        return count($myRoles) > 0;
+    }
+
+    private function hasAllRoles(array $roles)
     {
         $myRoles = array_filter($roles, [$this, 'hasRole']);
 
