@@ -282,7 +282,7 @@ class Request
     {
         $this->setParameter(
             "oauth_signature_method",
-            $signature_method->get_name(),
+            $signature_method->getName(),
             false
         );
         $signature = $this->buildSignature($signature_method, $consumer, $token);
@@ -291,7 +291,7 @@ class Request
 
     public function buildSignature($signature_method, $consumer, $token)
     {
-        $signature = $signature_method->build_signature($this, $consumer, $token);
+        $signature = $signature_method->buildSignature($this, $consumer, $token);
         return $signature;
     }
 
